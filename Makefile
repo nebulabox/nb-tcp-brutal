@@ -2,7 +2,7 @@ KERNEL_RELEASE  ?= $(shell uname -r)
 KERNEL_DIR      ?= /lib/modules/$(KERNEL_RELEASE)/build
 DKMS_TARBALL    ?= dkms.tar.gz
 TAR             ?= tar
-obj-m           += brutal.o
+obj-m           += nbtcp.o
 
 ccflags-y := -std=gnu99
 
@@ -16,10 +16,10 @@ clean: clean-dkms.conf clean-dkms-tarball
 	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) clean
 
 load:
-	sudo insmod brutal.ko
+	sudo insmod nbtcp.ko
 
 unload:
-	sudo rmmod brutal
+	sudo rmmod nbtcp
 
 .PHONY: dkms-tarball clean-dkms-tarball clean-dkms.conf
 
@@ -31,12 +31,12 @@ dkms.conf: ./scripts/mkdkmsconf.sh .always-make
 clean-dkms.conf:
 	$(RM) dkms.conf
 
-$(DKMS_TARBALL): dkms.conf Makefile brutal.c
+$(DKMS_TARBALL): dkms.conf Makefile nbtcp.c
 	$(TAR) zcf $(DKMS_TARBALL) \
 		--transform 's,^,./dkms_source_tree/,' \
 		dkms.conf \
 		Makefile \
-		brutal.c
+		nbtcp.c
 
 dkms-tarball: $(DKMS_TARBALL)
 
