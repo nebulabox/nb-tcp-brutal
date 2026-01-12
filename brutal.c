@@ -11,10 +11,10 @@
  and your kernel version is greater than 5.8.
 #endif
 
-#define INIT_PACING_RATE 125000 // 1 Mbps
+#define INIT_PACING_RATE 6250000 // 1 Mbps: 125000, 50M: 6250000
 #define INIT_CWND_GAIN 20
 
-#define MIN_PACING_RATE 62500 // 500 Kbps
+#define MIN_PACING_RATE 625000 // 500 Kbps: 62500, 5M: 625000
 #define MIN_CWND_GAIN 5
 #define MAX_CWND_GAIN 80
 #define MIN_CWND 4
@@ -278,7 +278,7 @@ static u32 brutal_ssthresh(struct sock *sk)
 
 static struct tcp_congestion_ops tcp_brutal_ops = {
     .flags = TCP_CONG_NON_RESTRICTED,
-    .name = "brutal",
+    .name = "nbtcp",
     .owner = THIS_MODULE,
     .init = brutal_init,
     .cong_control = brutal_main,
@@ -310,7 +310,7 @@ static void __exit brutal_unregister(void)
 module_init(brutal_register);
 module_exit(brutal_unregister);
 
-MODULE_AUTHOR("Aperture Internet Laboratory");
+MODULE_AUTHOR("nebulabox, Aperture Internet Laboratory");
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("TCP Brutal");
-MODULE_VERSION("1.0.2");
+MODULE_DESCRIPTION("NB TCP Brutal");
+MODULE_VERSION("1.1.0");
